@@ -3,10 +3,9 @@ using TMPro;
 
 public class PowerUpUI : MonoBehaviour
 {
-    public PlayerStats playerStats;
-
-    public TMP_InputField valueInput;
-    public TMP_Text messageText;
+    [SerializeField] private PlayerStats playerStats;
+    [SerializeField] private TMP_InputField valueInput;
+    [SerializeField] private TMP_Text messageText;
 
     private PowerUpType selectedPowerUp;
 
@@ -31,7 +30,7 @@ public class PowerUpUI : MonoBehaviour
         messageText.text = "Seleccionado: " + type.ToString();
     }
 
-         // BOTÓN APLICAR
+        // BOTÓN APLICAR
 
     public void ApplySelectedPowerUp()
     {
@@ -79,17 +78,9 @@ public class PowerUpUI : MonoBehaviour
         switch (selectedPowerUp)
         {
             case PowerUpType.Heal:
-                if (playerStats.currentHealth >= playerStats.maxHealth)
+                if (playerStats.CurrentHealth >= playerStats.MaxHealth)
                 {
-                    messageText.text = "Vida ya está al máximo.";
-                    return false;
-                }
-                break;
-
-            case PowerUpType.Shield:
-                if (playerStats.shieldActive)
-                {
-                    messageText.text = "El escudo ya está activo.";
+                    messageText.text = "Vida ya está al máximo: 100.";
                     return false;
                 }
                 break;
@@ -98,7 +89,8 @@ public class PowerUpUI : MonoBehaviour
         return true;
     }
 
-        // SWITCH
+
+         // SWITCH
 
     private void ApplyPowerUp(float value)
     {
@@ -106,21 +98,27 @@ public class PowerUpUI : MonoBehaviour
         {
             case PowerUpType.Heal:
                 playerStats.Heal(value);
-                messageText.text = "Vida actual: " + playerStats.currentHealth;
+                messageText.text = "Vida actual: " + playerStats.CurrentHealth;
                 break;
 
             case PowerUpType.SpeedBoost:
                 playerStats.SetSpeedMultiplier(value);
-                messageText.text = "Velocidad actual: " + playerStats.currentSpeed;
+                messageText.text = "Velocidad actual: " + playerStats.CurrentSpeed;
                 break;
 
             case PowerUpType.Shield:
-                playerStats.SetShield(true);
-                messageText.text = "Escudo activado.";
+                playerStats.ToggleShield();
+
+                if (playerStats.ShieldActive)
+                    messageText.text = "Escudo activado.";
+                else
+                    messageText.text = "Escudo desactivado.";
+
                 break;
 
             case PowerUpType.DamageBoost:
-                messageText.text = "Daño aumentado en: " + value;
+                playerStats.TakeDamage(value);
+                messageText.text = "Vida actual: " + playerStats.CurrentHealth;
                 break;
         }
     }
