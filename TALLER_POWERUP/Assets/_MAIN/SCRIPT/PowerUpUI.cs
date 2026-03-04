@@ -89,8 +89,7 @@ public class PowerUpUI : MonoBehaviour
         return true;
     }
 
-
-         // SWITCH
+    // SWITCH
 
     private void ApplyPowerUp(float value)
     {
@@ -117,8 +116,18 @@ public class PowerUpUI : MonoBehaviour
                 break;
 
             case PowerUpType.DamageBoost:
-                playerStats.TakeDamage(value);
-                messageText.text = "Vida actual: " + playerStats.CurrentHealth;
+
+                bool damaged = playerStats.TakeDamage(value);
+
+                if (!damaged)
+                {
+                    messageText.text = "Estás protegido. Vida actual: " + playerStats.CurrentHealth;
+                }
+                else
+                {
+                    messageText.text = "Vida actual: " + playerStats.CurrentHealth;
+                }
+
                 break;
         }
     }

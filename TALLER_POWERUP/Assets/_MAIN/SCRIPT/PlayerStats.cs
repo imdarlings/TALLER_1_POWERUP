@@ -29,15 +29,17 @@ public class PlayerStats : MonoBehaviour
             currentHealth = maxHealth;
     }
 
-    public void TakeDamage(float amount)
+    public bool TakeDamage(float amount)
     {
         if (shieldActive)
-            return; // El escudo bloquea el daño
+            return false; // No recibe daño
 
         currentHealth -= amount;
 
         if (currentHealth < 0)
             currentHealth = 0;
+
+        return true; // Si recibe daño
     }
 
     public void SetSpeedMultiplier(float multiplier)
